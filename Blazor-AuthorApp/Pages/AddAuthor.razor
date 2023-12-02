@@ -1,4 +1,5 @@
 @inject IAuthor IAuthorService
+@inject IJSRuntime JsRuntime
 
 @page "/addAuthor"
 <h3>AddAuthor</h3>
@@ -18,7 +19,17 @@
         </div>
         <div class="mb-3">
             <label class="form-label">City</label>
-            <InputText @bind-Value="author.City" class="form-control"></InputText>
+            @*<select @bind="author.City" class="form-control">
+                @if (Cities != null)
+                {
+                    <option value="">Select City</option>
+                    @foreach (var item in Cities)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                }
+            </select>*@
+            <SelectCity City="@author.City"></SelectCity>
             <ValidationMessage For="@(() => author.City )" />
         </div>
 
@@ -29,16 +40,17 @@
 
 @code {
     private Author author { get; set; }
-
+    
     protected override void OnInitialized()
     {
         author = new Author();
     }
-
-    private void AddNewAuthor()
+    
+    private async Task AddNewAuthor()
     {
         IAuthorService.SaveAuthor(author);
         author = new Author();
+       await JsRuntime.InvokeVoidAsync("saveSuccess");
     }
 
 

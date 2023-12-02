@@ -1,0 +1,24 @@
+@inject IJSRuntime JsRuntime
+
+<select class="form-control" @bind="City">
+    @if (Cities != null)
+    {
+        <option value="">Select City</option>
+        @foreach (var city in Cities)
+        {
+            <option value="@city">@city</option>
+        }
+    }
+</select>
+
+@code {
+    private List<string> Cities { get; set; }
+    
+    [Parameter]
+    public string City { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Cities = await JsRuntime.InvokeAsync<List<string>>("loadCities");
+    }
+}
