@@ -1,8 +1,46 @@
+@inject IAuthor IAuthorService
+
 @page "/addAuthor"
 <h3>AddAuthor</h3>
 <a class="nav-link" href="/authors">Back to List</a>
+<div class="col-6">
+    <EditForm Model="@author" OnValidSubmit="@AddNewAuthor">
+        <DataAnnotationsValidator />
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <InputText @bind-Value="author.Name" class="form-control"></InputText>
+            <ValidationMessage For="@(() => author.Name )" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">State</label>
+            <InputText @bind-Value="author.State" class="form-control"></InputText>
+            <ValidationMessage For="@(() => author.State )" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">City</label>
+            <InputText @bind-Value="author.City" class="form-control"></InputText>
+            <ValidationMessage For="@(() => author.City )" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </EditForm>
+</div>
 
 
 @code {
-    
+    private Author author { get; set; }
+
+    protected override void OnInitialized()
+    {
+        author = new Author();
+    }
+
+    private void AddNewAuthor()
+    {
+        IAuthorService.SaveAuthor(author);
+        author = new Author();
+    }
+
+
+
 }

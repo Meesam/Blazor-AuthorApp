@@ -30,4 +30,9 @@ public class AuthorService: IAuthor
     {
         return "v1";
     }
+
+    public void SaveAuthor(Author author)
+    {
+        _authors.Add(author);
+    }
 }
